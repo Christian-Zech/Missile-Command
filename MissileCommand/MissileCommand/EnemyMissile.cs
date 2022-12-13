@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
@@ -26,8 +26,8 @@ namespace MissileCommand
         }
         public void Move()
         {
-            position.X += velocity.X;
-            position.Y += velocity.Y;
+            position.X += velocity.X*Math.Cos(float)angle;
+            position.Y += velocity.Y*Math.Sin(float)angle;
         }
         
     }
