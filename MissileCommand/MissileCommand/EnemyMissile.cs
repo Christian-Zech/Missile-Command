@@ -28,6 +28,7 @@ namespace MissileCommand
         {
             position.X += velocity.X*Math.Cos(float)angle;
             position.Y += velocity.Y*Math.Sin(float)angle;
+            //test
         }
         
     }
