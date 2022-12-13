@@ -26,8 +26,7 @@ namespace MissileCommand
         }
         public void Move()
         {
-            position.X += velocity.X*Math.Cos((double)angle);
-            //test asdf
+            
         }
         
     }
