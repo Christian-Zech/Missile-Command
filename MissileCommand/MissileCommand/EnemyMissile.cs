@@ -17,7 +17,7 @@ namespace MissileCommand
         public Boolean isHit;
         public float angle;
         public Vector2 velocity;
-        public Missile(Vector2 pos, Vector2 vel, Boolean hit, float ang)
+        public EnemyMissile(Vector2 pos, Vector2 vel, Boolean hit, float ang)
         {
             position = pos;
             velocity = vel;
@@ -26,9 +26,8 @@ namespace MissileCommand
         }
         public void Move()
         {
-            position.X += velocity.X*Math.Cos(float)angle;
-            position.Y += velocity.Y*Math.Sin(float)angle;
-            //test
+            position.X += velocity.X*Math.Cos((double)angle);
+            //test asdf
         }
         
     }
