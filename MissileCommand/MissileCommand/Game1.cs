@@ -14,10 +14,17 @@ namespace MissileCommand
     /// <summary>
     /// This is the main type for your game
     /// </summary>
+    /// 
+
+
+
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        
+        SpriteFont menuFont;
 
         public Game1()
         {
@@ -48,6 +55,7 @@ namespace MissileCommand
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            menuFont = Content.Load<SpriteFont>("MenuFont");
         }
 
         /// <summary>
@@ -81,9 +89,12 @@ namespace MissileCommand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
