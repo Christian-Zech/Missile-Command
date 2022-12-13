@@ -22,8 +22,7 @@ namespace MissileCommand
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        hello        
+        
         SpriteFont menuFont;
 
         public Game1()
