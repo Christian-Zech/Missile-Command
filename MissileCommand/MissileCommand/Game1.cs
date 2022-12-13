@@ -25,6 +25,10 @@ namespace MissileCommand
         
         SpriteFont menuFont;
 
+        Boolean isMenu;
+
+        KeyboardState oldkb;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,6 +44,8 @@ namespace MissileCommand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            oldkb = Keyboard.GetState();
+            isMenu = true;
 
             base.Initialize();
         }
@@ -73,11 +79,14 @@ namespace MissileCommand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState kb = Keyboard.GetState();
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // TODO: Add your update logic here
+            if (kb.IsKeyDown(Keys.Space))
+                isMenu = false;
 
             base.Update(gameTime);
         }
@@ -92,6 +101,9 @@ namespace MissileCommand
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+
+            if (isMenu)
+                spriteBatch.DrawString(menuFont, "Welcome to Missile Command!\nPress SPACE to start!", new Vector2(150, 150), Color.White);
 
             spriteBatch.End();
 
