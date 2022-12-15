@@ -48,6 +48,8 @@ namespace MissileCommand
             oldkb = Keyboard.GetState();
             isMenu = true;
 
+            this.IsMouseVisible = true;
+
             base.Initialize();
         }
 
