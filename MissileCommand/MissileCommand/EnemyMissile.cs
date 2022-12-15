@@ -31,5 +31,10 @@ namespace MissileCommand
             trail.Add(new Rectangle((int)position.X, (int)position.Y, 2, 2));
         }
 
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            spriteBatch.Draw(texture, position, Color.White);
+        }
+
     }
 }

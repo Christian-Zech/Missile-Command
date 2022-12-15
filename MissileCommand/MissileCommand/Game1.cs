@@ -30,6 +30,7 @@ namespace MissileCommand
         Rectangle[] missileSites;
 
         List<EnemyMissile> eMissiles;
+        Airplane airplane;
 
         Boolean isMenu;
 
@@ -63,7 +64,11 @@ namespace MissileCommand
             missileSites[2] = new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60);
             isMenu = true;
 
+            
+
             base.Initialize();
+
+            airplane = new Airplane(new Rectangle(100, 200, 50, 50), new Vector2(2, 0), pixel);
         }
 
         /// <summary>
@@ -200,6 +205,8 @@ namespace MissileCommand
                     
                 }
                 spriteBatch.Draw(crosshairT, crosshair, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+                airplane.Draw(spriteBatch);
             }
             spriteBatch.End();
 
