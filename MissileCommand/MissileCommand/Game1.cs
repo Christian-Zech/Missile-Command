@@ -24,6 +24,7 @@ namespace MissileCommand
         SpriteBatch spriteBatch;
         
         SpriteFont menuFont;
+        Texture2D pixel;
 
         Boolean isMenu;
 
@@ -60,7 +61,8 @@ namespace MissileCommand
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            menuFont = Content.Load<SpriteFont>("MenuFont");
+            menuFont = this.Content.Load<SpriteFont>("MenuFont");
+            pixel = this.Content.Load<Texture2D>("pixel");
         }
 
         /// <summary>
