@@ -13,21 +13,26 @@ namespace MissileCommand
 {
     class EnemyMissile
     {
-        public Vector2 position;
+        public Rectangle position;
         public Boolean isHit;
-        public float angle;
+        public List<Rectangle> trail;
         public Vector2 velocity;
-        public EnemyMissile(Vector2 pos, Vector2 vel, Boolean hit, float ang)
+        public EnemyMissile(Rectangle pos, Vector2 vel, Boolean hit)
         {
             position = pos;
             velocity = vel;
             isHit = hit;
-            angle = ang;
+            trail = new List<Rectangle>();
         }
         public void Move()
         {
-            
+            position.X += (int)velocity.X;
+            position.Y += (int)velocity.Y;
+            trail.Add(new Rectangle((int)position.X, (int)position.Y, 4, 4));
         }
-        
+
     }
 }
+
+
+
