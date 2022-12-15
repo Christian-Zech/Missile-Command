@@ -53,7 +53,7 @@ namespace MissileCommand
         {
             // TODO: Add your initialization logic here
             eMissiles = new List<EnemyMissile>();
-            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2), false));
+            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2)));
             oldkb = Keyboard.GetState();
             oldMouse = Mouse.GetState();
             crosshair = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 7, GraphicsDevice.Viewport.Height / 2, 15, 15);
@@ -117,6 +117,22 @@ namespace MissileCommand
                 //if mouse is the crosshair
                 //crosshair.X = mouse.X;
                 //crosshair.Y = mouse.Y;
+
+
+
+
+                // plane logic
+                if(airplane.firingMissile)
+                {
+                    // TODO: add pathing calculations for cities and missile sites (once those things are implemented)
+                    eMissiles.Add(new EnemyMissile(new Rectangle(airplane.position.X, airplane.position.Y, 8, 8), new Vector2(1, 3)));
+
+
+                    airplane.firingMissile = false;
+                }
+
+
+
 
                 //if keyboard moves the crosshair
                 if (kb.IsKeyDown(Keys.W) && crosshair.Y > 0)

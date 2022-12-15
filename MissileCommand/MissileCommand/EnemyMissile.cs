@@ -17,11 +17,11 @@ namespace MissileCommand
         public Boolean isHit;
         public List<Rectangle> trail;
         public Vector2 velocity;
-        public EnemyMissile(Rectangle pos, Vector2 vel, Boolean hit)
+        public EnemyMissile(Rectangle pos, Vector2 vel)
         {
             position = pos;
             velocity = vel;
-            isHit = hit;
+            isHit = false;
             trail = new List<Rectangle>();
         }
         public void Move()
