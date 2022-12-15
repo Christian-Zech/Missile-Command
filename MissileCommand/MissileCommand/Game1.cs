@@ -90,6 +90,8 @@ namespace MissileCommand
             if (kb.IsKeyDown(Keys.Space))
                 isMenu = false;
 
+            oldkb = kb;
+
             base.Update(gameTime);
         }
 
