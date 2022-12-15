@@ -26,14 +26,22 @@ namespace MissileCommand
         }
 
 
-        public void Update()
+        public void Update(Rectangle window)
         {
+
+            // makes airplane randomly move left and right unless it hits wall
+            if (rand.Next(0, 150) == 5 || position.X < window.Left || position.X > window.Right - position.Width)
+                velocity.X *= -1;
+
+
+
             // moves plane horizontally
             position.X += (int)velocity.X;
 
 
+
             // randomly fires one missile
-            if(rand.Next(0, 100) == 5 && !firingMissile)
+            if(rand.Next(0, 200) == 5 && !firingMissile)
                 fire();
 
 
@@ -46,7 +54,6 @@ namespace MissileCommand
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Update();
             spriteBatch.Draw(texture, position, Color.White);
             
         }

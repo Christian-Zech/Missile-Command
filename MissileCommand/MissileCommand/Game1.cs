@@ -28,6 +28,7 @@ namespace MissileCommand
 
         Rectangle crosshair, ground;
         Rectangle[] missileSites;
+        Rectangle window;
 
         List<EnemyMissile> eMissiles;
         Airplane airplane;
@@ -63,7 +64,7 @@ namespace MissileCommand
             missileSites[1] = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60);
             missileSites[2] = new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60);
             isMenu = true;
-
+            window = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             
 
             base.Initialize();
@@ -122,6 +123,8 @@ namespace MissileCommand
 
 
                 // plane logic
+
+                airplane.Update(window);
                 if(airplane.firingMissile)
                 {
                     // TODO: add pathing calculations for cities and missile sites (once those things are implemented)
