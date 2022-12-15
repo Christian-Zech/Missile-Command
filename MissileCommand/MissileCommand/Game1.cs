@@ -140,12 +140,21 @@ namespace MissileCommand
                     if (eMissiles[i].position.Intersects(missileSites[0]))
                     {
                         //missile site is hit
+                        eMissiles[i].trail.Clear();
                         eMissiles.RemoveAt(i);
                     }
                     else if (eMissiles[i].position.X < 0 || eMissiles[i].position.X > GraphicsDevice.Viewport.Width)
                     {
                         //too far left or right
+                        eMissiles[i].trail.Clear();
                         eMissiles.RemoveAt(i);
+                    }
+                    else if (eMissiles[i].position.Y > GraphicsDevice.Viewport.Height - 20)
+                    {
+                        //city is hit
+                        eMissiles[i].trail.Clear();
+                        eMissiles.RemoveAt(i);
+                        
                     }
                 }
             }
@@ -172,14 +181,23 @@ namespace MissileCommand
 
             if (!isMenu)
             {
+                //ground
                 spriteBatch.Draw(pixel, ground, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+                //player missile sites
                 spriteBatch.Draw(pixel, missileSites[0], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
                 spriteBatch.Draw(pixel, missileSites[1], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
                 spriteBatch.Draw(pixel, missileSites[2], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
                 for (int i = 0; i < eMissiles.Count; i++)
                 {
-                    spriteBatch.Draw(pixel, eMissiles[i].position, Color.Red);
-                    spriteBatch.Draw(pixel, eMissiles[i].trail[i], Color.White);
+                    spriteBatch.Draw(pixel, eMissiles[i].position, Color.Red); //draws the enemy missiles
+                    for (int j = 0; j < eMissiles[i].trail.Count; j++)
+                    {
+                        //draws the missiles trail
+                        spriteBatch.Draw(pixel, eMissiles[i].trail[j], Color.White);
+                    }
+                    
                 }
                 spriteBatch.Draw(crosshairT, crosshair, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
             }

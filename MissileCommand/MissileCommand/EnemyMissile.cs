@@ -28,11 +28,8 @@ namespace MissileCommand
         {
             position.X += (int)velocity.X;
             position.Y += (int)velocity.Y;
-            trail.Add(new Rectangle((int)position.X, (int)position.Y, 4, 4));
+            trail.Add(new Rectangle((int)position.X, (int)position.Y, 2, 2));
         }
 
     }
 }
-
-
-
