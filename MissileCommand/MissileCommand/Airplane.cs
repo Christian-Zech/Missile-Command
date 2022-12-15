@@ -14,13 +14,15 @@ namespace MissileCommand
         public Rectangle position;
         public Vector2 velocity;
         public Boolean firingMissile;
+        public Boolean isActive;
         public Random rand;
 
-        public Airplane(Rectangle position, Vector2 velocity, Texture2D texture)
+        public Airplane(Texture2D texture)
         {
-            this.position = position;
-            this.velocity = velocity;
+            position = new Rectangle(0, 0, 30, 10);
+            velocity = new Vector2(3, 0);
             firingMissile = false;
+            isActive = false;
             rand = new Random();
             this.texture = texture;
         }
@@ -47,6 +49,14 @@ namespace MissileCommand
 
         }
 
+        public void reset()
+        {
+            position = new Rectangle(0, 0, 30, 10);
+            velocity = new Vector2(3, 0);
+            firingMissile = false;
+            isActive = false;
+        }
+
         public void fire()
         {
             firingMissile = true;
@@ -54,7 +64,7 @@ namespace MissileCommand
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, Color.Red);
             
         }
 
