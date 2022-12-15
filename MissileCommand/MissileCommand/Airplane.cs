@@ -19,8 +19,8 @@ namespace MissileCommand
 
         public Airplane(Texture2D texture)
         {
-            position = new Rectangle(0, 0, 30, 10);
-            velocity = new Vector2(3, 0);
+            position = Rectangle.Empty;
+            velocity = Vector2.Zero;
             firingMissile = false;
             isActive = false;
             rand = new Random();
@@ -31,27 +31,46 @@ namespace MissileCommand
         public void Update(Rectangle window)
         {
 
-            // makes airplane randomly move left and right unless it hits wall
-            if (rand.Next(0, 150) == 5 || position.X < window.Left || position.X > window.Right - position.Width)
-                velocity.X *= -1;
+            if (isActive)
+            {
 
 
 
-            // moves plane horizontally
-            position.X += (int)velocity.X;
+                // makes airplane randomly move left and right unless it hits wall
+                if (rand.Next(0, 150) == 5 || position.X < window.Left || position.X > window.Right - position.Width)
+                    velocity.X *= -1;
 
 
 
-            // randomly fires one missile
-            if(rand.Next(0, 200) == 5 && !firingMissile)
-                fire();
+                // moves plane horizontally
+                position.X += (int)velocity.X;
+
+
+
+                // randomly fires one missile
+                if (rand.Next(0, 200) == 5 && !firingMissile)
+                    fire();
+
+            }
+            else
+            {
+
+                if (rand.Next(0, 500) == 5)
+                {
+                    reset();
+                    isActive = true;
+                }
+                    
+
+            }
+
 
 
         }
 
         public void reset()
         {
-            position = new Rectangle(0, 0, 30, 10);
+            position = new Rectangle(0, 200, 50, 20);
             velocity = new Vector2(3, 0);
             firingMissile = false;
             isActive = false;
@@ -64,7 +83,8 @@ namespace MissileCommand
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.Red);
+            if(isActive)
+                spriteBatch.Draw(texture, position, Color.Red);
             
         }
 

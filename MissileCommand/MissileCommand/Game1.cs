@@ -69,7 +69,7 @@ namespace MissileCommand
 
             base.Initialize();
 
-            airplane = new Airplane(new Rectangle(100, 200, 50, 50), new Vector2(2, 0), pixel);
+            airplane = new Airplane(pixel);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace MissileCommand
 
 
 
-                // plane logic
+                // airplane logic
 
                 airplane.Update(window);
                 if(airplane.firingMissile)
