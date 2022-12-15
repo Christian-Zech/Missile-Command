@@ -22,13 +22,19 @@ namespace MissileCommand
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
         SpriteFont menuFont;
-        Texture2D pixel;
+        Texture2D pixel, crosshairT;
+
+        Rectangle crosshair, ground;
+        Rectangle[] missileSites;
+
+        List<EnemyMissile> eMissiles;
 
         Boolean isMenu;
 
         KeyboardState oldkb;
+        MouseState oldMouse;
 
         public Game1()
         {
@@ -45,10 +51,17 @@ namespace MissileCommand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            eMissiles = new List<EnemyMissile>();
+            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2), false));
             oldkb = Keyboard.GetState();
+            oldMouse = Mouse.GetState();
+            crosshair = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 7, GraphicsDevice.Viewport.Height / 2, 15, 15);
+            ground = new Rectangle(0, GraphicsDevice.Viewport.Height - 15, GraphicsDevice.Viewport.Width, 15);
+            missileSites = new Rectangle[3];
+            missileSites[0] = new Rectangle(40, GraphicsDevice.Viewport.Height - 60, 70, 60);
+            missileSites[1] = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60);
+            missileSites[2] = new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60);
             isMenu = true;
-
-            this.IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -65,6 +78,7 @@ namespace MissileCommand
             // TODO: use this.Content to load your game content here
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
             pixel = this.Content.Load<Texture2D>("pixel");
+            crosshairT = this.Content.Load<Texture2D>("crosshair-img");
         }
 
         /// <summary>
@@ -83,6 +97,7 @@ namespace MissileCommand
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            MouseState mouse = Mouse.GetState();
             KeyboardState kb = Keyboard.GetState();
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
@@ -92,8 +107,52 @@ namespace MissileCommand
             if (kb.IsKeyDown(Keys.Space))
                 isMenu = false;
 
-            oldkb = kb;
+            if (!isMenu)
+            {
+                //if mouse is the crosshair
+                //crosshair.X = mouse.X;
+                //crosshair.Y = mouse.Y;
 
+                //if keyboard moves the crosshair
+                if (kb.IsKeyDown(Keys.W) && crosshair.Y > 0)
+                {
+                    crosshair.Y -= 5;
+                }
+                if (kb.IsKeyDown(Keys.S) && crosshair.Y < GraphicsDevice.Viewport.Height)
+                {
+                    crosshair.Y += 5;
+                }
+                if (kb.IsKeyDown(Keys.A) && crosshair.X > 0)
+                {
+                    crosshair.X -= 5;
+                }
+                if (kb.IsKeyDown(Keys.D) && crosshair.X < GraphicsDevice.Viewport.Width)
+                {
+                    crosshair.X += 5;
+                }
+
+                //moving the enemy missiles
+                for (int i = 0; i < eMissiles.Count; i++)
+                {
+                    eMissiles[i].Move();
+
+                    //checking for out of bounds
+                    if (eMissiles[i].position.Intersects(missileSites[0]))
+                    {
+                        //missile site is hit
+                        eMissiles.RemoveAt(i);
+                    }
+                    else if (eMissiles[i].position.X < 0 || eMissiles[i].position.X > GraphicsDevice.Viewport.Width)
+                    {
+                        //too far left or right
+                        eMissiles.RemoveAt(i);
+                    }
+                }
+            }
+
+
+            oldkb = kb;
+            oldMouse = mouse;
             base.Update(gameTime);
         }
 
@@ -111,9 +170,24 @@ namespace MissileCommand
             if (isMenu)
                 spriteBatch.DrawString(menuFont, "Welcome to Missile Command!\nPress SPACE to start!", new Vector2(150, 150), Color.White);
 
+            if (!isMenu)
+            {
+                spriteBatch.Draw(pixel, ground, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                spriteBatch.Draw(pixel, missileSites[0], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                spriteBatch.Draw(pixel, missileSites[1], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                spriteBatch.Draw(pixel, missileSites[2], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                for (int i = 0; i < eMissiles.Count; i++)
+                {
+                    spriteBatch.Draw(pixel, eMissiles[i].position, Color.Red);
+                    spriteBatch.Draw(pixel, eMissiles[i].trail[i], Color.White);
+                }
+                spriteBatch.Draw(crosshairT, crosshair, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
     }
 }
+
+
