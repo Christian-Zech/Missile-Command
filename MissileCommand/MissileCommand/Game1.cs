@@ -36,6 +36,9 @@ namespace MissileCommand
         KeyboardState oldkb;
         MouseState oldMouse;
 
+        int score;
+        SpriteFont scoreFont;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,7 +65,7 @@ namespace MissileCommand
             missileSites[1] = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60);
             missileSites[2] = new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60);
             isMenu = true;
-
+            score=0;
             base.Initialize();
         }
 
@@ -79,6 +82,7 @@ namespace MissileCommand
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
             pixel = this.Content.Load<Texture2D>("pixel");
             crosshairT = this.Content.Load<Texture2D>("crosshair-img");
+            scoreFont=Content.Load<SpriteFont>("gameScore");
         }
 
         /// <summary>
@@ -200,6 +204,9 @@ namespace MissileCommand
                     
                 }
                 spriteBatch.Draw(crosshairT, crosshair, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+                //score
+                spriteBatch.DrawString(scoreFont,""+score,new Vector2(350,0),Color.White);
             }
             spriteBatch.End();
 
