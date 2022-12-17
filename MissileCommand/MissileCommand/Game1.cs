@@ -115,11 +115,6 @@ namespace MissileCommand
 
             if (!isMenu)
             {
-                //if mouse is the crosshair
-                //crosshair.X = mouse.X;
-                //crosshair.Y = mouse.Y;
-
-
 
 
                 // airplane logic
@@ -135,7 +130,9 @@ namespace MissileCommand
                 }
 
 
-
+                //if mouse is the crosshair
+                //crosshair.X = mouse.X;
+                //crosshair.Y = mouse.Y;
 
                 //if keyboard moves the crosshair
                 if (kb.IsKeyDown(Keys.W) && crosshair.Y > 0)
