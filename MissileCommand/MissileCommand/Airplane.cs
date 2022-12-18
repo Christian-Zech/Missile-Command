@@ -54,7 +54,7 @@ namespace MissileCommand
             }
             else
             {
-
+                // resets plane at random time if it isn't already active
                 if (rand.Next(0, 500) == 5)
                 {
                     reset();
