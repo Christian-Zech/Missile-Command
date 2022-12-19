@@ -71,6 +71,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Airplane.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="PlayerMissiles.cs" />
     <Compile Include="Site.cs" />

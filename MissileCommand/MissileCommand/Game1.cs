@@ -27,9 +27,12 @@ namespace MissileCommand
         Texture2D pixel, crosshairT;
 
         Rectangle crosshair, ground;
+        Rectangle[] missileSites;
+        Rectangle window;
         Site[] missileSites;
 
         List<EnemyMissile> eMissiles;
+        Airplane airplane;
 
         Boolean isMenu;
 
@@ -55,7 +58,7 @@ namespace MissileCommand
         {
             // TODO: Add your initialization logic here
             eMissiles = new List<EnemyMissile>();
-            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2), false));
+            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2)));
             oldkb = Keyboard.GetState();
             oldMouse = Mouse.GetState();
             crosshair = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 7, GraphicsDevice.Viewport.Height / 2, 15, 15);
@@ -65,8 +68,14 @@ namespace MissileCommand
             missileSites[1] = new Site(new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
             missileSites[2] = new Site(new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
             isMenu = true;
+            
+            window = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            
+
             score=0;
             base.Initialize();
+
+            airplane = new Airplane(pixel);
         }
 
         /// <summary>
@@ -113,6 +122,21 @@ namespace MissileCommand
 
             if (!isMenu)
             {
+
+
+                // airplane logic
+
+                airplane.Update(window);
+                if(airplane.firingMissile)
+                {
+                    // TODO: add pathing calculations for cities and missile sites (once those things are implemented)
+                    eMissiles.Add(new EnemyMissile(new Rectangle(airplane.position.X, airplane.position.Y, 8, 8), new Vector2(1, 3)));
+
+
+                    airplane.firingMissile = false;
+                }
+
+
                 //if mouse is the crosshair
                 //crosshair.X = mouse.X;
                 //crosshair.Y = mouse.Y;
@@ -308,6 +332,7 @@ namespace MissileCommand
                 }
                 spriteBatch.Draw(crosshairT, crosshair, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
+                airplane.Draw(spriteBatch);
                 //score
                 spriteBatch.DrawString(scoreFont,""+score,new Vector2(350,0),Color.White);
             }
