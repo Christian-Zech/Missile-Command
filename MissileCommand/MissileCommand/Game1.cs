@@ -30,6 +30,7 @@ namespace MissileCommand
         Rectangle window;
         List<Rectangle> markers;
         Site[] missileSites;
+        List<Explosion> explosions;
 
         List<EnemyMissile> eMissiles;
         Airplane airplane;
@@ -66,6 +67,7 @@ namespace MissileCommand
         {
             // TODO: Add your initialization logic here
             markers = new List<Rectangle>();
+            explosions = new List<Explosion>();
             eMissiles = new List<EnemyMissile>();
             eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2), false));
             oldkb = Keyboard.GetState();
