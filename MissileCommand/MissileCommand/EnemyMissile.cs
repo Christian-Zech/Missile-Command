@@ -31,5 +31,6 @@ namespace MissileCommand
             trail.Add(new Rectangle((int)position.X, (int)position.Y, 2, 2));
         }
 
+
     }
 }
