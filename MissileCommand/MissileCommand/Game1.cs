@@ -112,12 +112,22 @@ namespace MissileCommand
         {
             // TODO: Unload any non ContentManager content here
         }
-
+        //comment hi
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        public Boolean allEnemiesHit()
+        {
+            for (int i = 0; i < eMissiles.Count; i++)
+            {
+                Boolean hitAll = eMissiles[i].isHit;
+                if (!eMissiles[i].isHit)
+                    return false;
+            }
+            return true;
+        }
         protected override void Update(GameTime gameTime)
         {
             MouseState mouse = Mouse.GetState();
