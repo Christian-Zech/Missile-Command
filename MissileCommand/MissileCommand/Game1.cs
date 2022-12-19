@@ -28,7 +28,6 @@ namespace MissileCommand
 
         Rectangle crosshair, ground;
         Rectangle window;
-=======
         List<Rectangle> markers;
         Site[] missileSites;
 

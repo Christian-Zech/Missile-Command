@@ -38,7 +38,7 @@ namespace MissileCommand
             {
 
 
-                if(position.X < window.Left || position.X > window.Right - position.Width)
+                if(position.X < window.Left - position.Width || position.X > window.Right)
                     isActive = false;
 
                 
@@ -70,15 +70,15 @@ namespace MissileCommand
 
         public void reset()
         {
-            position = new Rectangle(0, 200, 50, 20);
+            position = new Rectangle(0, rand.Next(100,250), 50, 20);
 
             // randomly decides what location to spawn the airplane
             if(rand.Next(0,2) == 0) {
-                velocity = new Vector2(-3,0);
+                velocity = new Vector2(-1,0);
                 position.X = window.Right - 15;
             }
             else
-                velocity = new Vector2(3,0);
+                velocity = new Vector2(1,0);
             
             firingMissile = false;
             isActive = false;
