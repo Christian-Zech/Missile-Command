@@ -21,6 +21,7 @@ namespace MissileCommand
             rect = pos;
             done = false;
             temp = 0;
+            Explode();
         }
         public void Explode()
         {
