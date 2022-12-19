@@ -27,7 +27,7 @@ namespace MissileCommand
         Texture2D pixel, crosshairT;
 
         Rectangle crosshair, ground;
-        Rectangle[] missileSites;
+        Site[] missileSites;
 
         List<EnemyMissile> eMissiles;
 
@@ -60,10 +60,10 @@ namespace MissileCommand
             oldMouse = Mouse.GetState();
             crosshair = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 7, GraphicsDevice.Viewport.Height / 2, 15, 15);
             ground = new Rectangle(0, GraphicsDevice.Viewport.Height - 15, GraphicsDevice.Viewport.Width, 15);
-            missileSites = new Rectangle[3];
-            missileSites[0] = new Rectangle(40, GraphicsDevice.Viewport.Height - 60, 70, 60);
-            missileSites[1] = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60);
-            missileSites[2] = new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60);
+            missileSites = new Site[3];
+            missileSites[0] = new Site(new Rectangle(40, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
+            missileSites[1] = new Site(new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
+            missileSites[2] = new Site(new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
             isMenu = true;
             score=0;
             base.Initialize();
@@ -82,7 +82,7 @@ namespace MissileCommand
             menuFont = this.Content.Load<SpriteFont>("MenuFont");
             pixel = this.Content.Load<Texture2D>("pixel");
             crosshairT = this.Content.Load<Texture2D>("crosshair-img");
-            scoreFont=Content.Load<SpriteFont>("gameScore");
+            scoreFont=Content.Load<SpriteFont>("MenuFont");
         }
 
         /// <summary>
@@ -141,9 +141,10 @@ namespace MissileCommand
                     eMissiles[i].Move();
 
                     //checking for out of bounds
-                    if (eMissiles[i].position.Intersects(missileSites[0]))
+                    if (missileSites[0].CheckHit(eMissiles[i].position))
                     {
                         //missile site is hit
+                        missileSites[0].Destroy();
                         eMissiles[i].trail.Clear();
                         eMissiles.RemoveAt(i);
                     }
@@ -159,6 +160,93 @@ namespace MissileCommand
                         eMissiles[i].trail.Clear();
                         eMissiles.RemoveAt(i);
                         
+                    }
+                }
+                if (kb.IsKeyDown(Keys.Space) && oldkb.IsKeyUp(Keys.Space))
+                {
+                    if (crosshair.X < GraphicsDevice.Viewport.Width / 3)
+                    {
+                        if (missileSites[0].missiles.Count != 0 && missileSites[0].missiles[0].velocity.Y == 0)
+                        {
+                            missileSites[0].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                        }
+                        
+                    }
+                    else if (crosshair.X > GraphicsDevice.Viewport.Width / 3 && crosshair.X < 2*GraphicsDevice.Viewport.Width / 3)
+                    {
+                        if (missileSites[1].missiles.Count != 0 && missileSites[1].missiles[0].velocity.Y == 0)
+                        {
+                            missileSites[1].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                        }
+                    }
+                    else
+                    {
+                        if (missileSites[2].missiles.Count != 0 && missileSites[2].missiles[0].velocity.Y == 0)
+                        {
+                            missileSites[2].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                        }
+                    }
+                }
+                for (int i = 0; i < missileSites[0].missiles.Count; i++)
+                {
+                    if (missileSites[0].missiles[i].velocity.Y != 0)
+                    {
+                        
+                        if (missileSites[0].missiles[i].positionReached())
+                        {
+                            missileSites[0].missiles[i].Explode();
+                        }
+                        else
+                        {
+                            missileSites[0].missiles[i].Move();
+                        }
+                        
+                    }
+                    if (missileSites[0].missiles[i].exploded)
+                    {
+                        missileSites[0].missiles.RemoveAt(i);
+                    }
+                }
+
+                for (int i = 0; i < missileSites[1].missiles.Count; i++)
+                {
+                    if (missileSites[1].missiles[i].velocity.Y != 0)
+                    {
+
+                        if (missileSites[1].missiles[i].positionReached())
+                        {
+                            missileSites[1].missiles[i].Explode();
+                        }
+                        else
+                        {
+                            missileSites[1].missiles[i].Move();
+                        }
+
+                    }
+                    if (missileSites[1].missiles[i].exploded)
+                    {
+                        missileSites[1].missiles.RemoveAt(i);
+                    }
+                }
+
+                for (int i = 0; i < missileSites[2].missiles.Count; i++)
+                {
+                    if (missileSites[2].missiles[i].velocity.Y != 0)
+                    {
+
+                        if (missileSites[2].missiles[i].positionReached())
+                        {
+                            missileSites[2].missiles[i].Explode();
+                        }
+                        else
+                        {
+                            missileSites[2].missiles[i].Move();
+                        }
+
+                    }
+                    if (missileSites[2].missiles[i].exploded)
+                    {
+                        missileSites[2].missiles.RemoveAt(i);
                     }
                 }
             }
@@ -189,9 +277,24 @@ namespace MissileCommand
                 spriteBatch.Draw(pixel, ground, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
 
                 //player missile sites
-                spriteBatch.Draw(pixel, missileSites[0], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
-                spriteBatch.Draw(pixel, missileSites[1], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
-                spriteBatch.Draw(pixel, missileSites[2], null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                spriteBatch.Draw(pixel, missileSites[0].position, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                spriteBatch.Draw(pixel, missileSites[1].position, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+                spriteBatch.Draw(pixel, missileSites[2].position, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
+
+                for (int i = 0; i < missileSites[0].missiles.Count; i++)
+                {
+                    spriteBatch.Draw(pixel, missileSites[0].missiles[i].position, Color.White);
+                }
+
+                for (int i = 0; i < missileSites[1].missiles.Count; i++)
+                {
+                    spriteBatch.Draw(pixel, missileSites[1].missiles[i].position, Color.White);
+                }
+
+                for (int i = 0; i < missileSites[2].missiles.Count; i++)
+                {
+                    spriteBatch.Draw(pixel, missileSites[2].missiles[i].position, Color.White);
+                }
 
                 for (int i = 0; i < eMissiles.Count; i++)
                 {
