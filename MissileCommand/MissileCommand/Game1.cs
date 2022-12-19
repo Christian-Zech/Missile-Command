@@ -34,24 +34,20 @@ namespace MissileCommand
         List<EnemyMissile> eMissiles;
         Airplane airplane;
 
-        Boolean isMenu;
-
         KeyboardState oldkb;
         MouseState oldMouse;
 
         int score;
         SpriteFont scoreFont;
 
-        enum Levels
+        enum GameState
         {
-            level1,
-            level2,
-            level3,
-            level4,
-            level5
+           menu,
+           play,
+           end
         }
 
-        Levels levels;
+        GameState gameState;
 
 
         public Game1()
@@ -80,10 +76,9 @@ namespace MissileCommand
             missileSites[0] = new Site(new Rectangle(40, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
             missileSites[1] = new Site(new Rectangle((GraphicsDevice.Viewport.Width / 2) - 35, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
             missileSites[2] = new Site(new Rectangle(GraphicsDevice.Viewport.Width - 110, GraphicsDevice.Viewport.Height - 60, 70, 60), true);
-            isMenu = true;
             
             window = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            levels = Levels.level1;
+            gameState = GameState.menu;
 
             score=0;
             base.Initialize();
@@ -130,10 +125,10 @@ namespace MissileCommand
                 this.Exit();
 
             // TODO: Add your update logic here
-            if (kb.IsKeyDown(Keys.Space))
-                isMenu = false;
+            if (kb.IsKeyDown(Keys.Space) && gameState == GameState.menu)
+                gameState++;
 
-            if (!isMenu)
+            if (gameState == GameState.play)
             {
 
 
@@ -314,10 +309,10 @@ namespace MissileCommand
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            if (isMenu)
+            if (gameState == GameState.menu)
                 spriteBatch.DrawString(menuFont, "Welcome to Missile Command!\nPress SPACE to start!", new Vector2(150, 150), Color.White);
 
-            if (!isMenu)
+            if (gameState == GameState.menu)
             {
                 //ground
                 spriteBatch.Draw(pixel, ground, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
