@@ -42,6 +42,18 @@ namespace MissileCommand
         int score;
         SpriteFont scoreFont;
 
+        enum Levels
+        {
+            level1,
+            level2,
+            level3,
+            level4,
+            level5
+        }
+
+        Levels levels;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -71,7 +83,7 @@ namespace MissileCommand
             isMenu = true;
             
             window = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            
+            levels = Levels.level1;
 
             score=0;
             base.Initialize();
