@@ -17,11 +17,11 @@ namespace MissileCommand
         public Boolean isHit;
         public List<Rectangle> trail;
         public Vector2 velocity;
-        public EnemyMissile(Rectangle pos, Vector2 vel)
+        public EnemyMissile(Rectangle pos, Vector2 vel, Boolean hit)
         {
             position = pos;
             velocity = vel;
-            isHit = false;
+            isHit = hit;
             trail = new List<Rectangle>();
         }
         public void Move()
@@ -30,7 +30,6 @@ namespace MissileCommand
             position.Y += (int)velocity.Y;
             trail.Add(new Rectangle((int)position.X, (int)position.Y, 2, 2));
         }
-
 
     }
 }
