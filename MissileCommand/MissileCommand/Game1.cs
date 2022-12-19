@@ -27,7 +27,6 @@ namespace MissileCommand
         Texture2D pixel, crosshairT;
 
         Rectangle crosshair, ground;
-        Rectangle[] missileSites;
         Rectangle window;
         Site[] missileSites;
 
@@ -58,7 +57,7 @@ namespace MissileCommand
         {
             // TODO: Add your initialization logic here
             eMissiles = new List<EnemyMissile>();
-            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2)));
+            eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2), false));
             oldkb = Keyboard.GetState();
             oldMouse = Mouse.GetState();
             crosshair = new Rectangle((GraphicsDevice.Viewport.Width / 2) - 7, GraphicsDevice.Viewport.Height / 2, 15, 15);
@@ -130,7 +129,7 @@ namespace MissileCommand
                 if(airplane.firingMissile)
                 {
                     // TODO: add pathing calculations for cities and missile sites (once those things are implemented)
-                    eMissiles.Add(new EnemyMissile(new Rectangle(airplane.position.X, airplane.position.Y, 8, 8), new Vector2(1, 3)));
+                    eMissiles.Add(new EnemyMissile(new Rectangle(airplane.position.X, airplane.position.Y, 8, 8), new Vector2(1, 3), false));
 
 
                     airplane.firingMissile = false;
