@@ -28,6 +28,8 @@ namespace MissileCommand
 
         Rectangle crosshair, ground;
         Rectangle window;
+=======
+        List<Rectangle> markers;
         Site[] missileSites;
 
         List<EnemyMissile> eMissiles;
@@ -56,6 +58,7 @@ namespace MissileCommand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            markers = new List<Rectangle>();
             eMissiles = new List<EnemyMissile>();
             eMissiles.Add(new EnemyMissile(new Rectangle(10, 10, 8, 8), new Vector2(1, 2), false));
             oldkb = Keyboard.GetState();
@@ -185,6 +188,8 @@ namespace MissileCommand
                         
                     }
                 }
+
+                //shooting the missiles
                 if (kb.IsKeyDown(Keys.Space) && oldkb.IsKeyUp(Keys.Space))
                 {
                     if (crosshair.X < GraphicsDevice.Viewport.Width / 3)
@@ -192,6 +197,7 @@ namespace MissileCommand
                         if (missileSites[0].missiles.Count != 0 && missileSites[0].missiles[0].velocity.Y == 0)
                         {
                             missileSites[0].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                            markers.Add(new Rectangle(crosshair.X, crosshair.Y, 10, 10));
                         }
                         
                     }
@@ -200,6 +206,7 @@ namespace MissileCommand
                         if (missileSites[1].missiles.Count != 0 && missileSites[1].missiles[0].velocity.Y == 0)
                         {
                             missileSites[1].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                            markers.Add(new Rectangle(crosshair.X, crosshair.Y, 10, 10));
                         }
                     }
                     else
@@ -207,6 +214,7 @@ namespace MissileCommand
                         if (missileSites[2].missiles.Count != 0 && missileSites[2].missiles[0].velocity.Y == 0)
                         {
                             missileSites[2].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                            markers.Add(new Rectangle(crosshair.X, crosshair.Y, 10, 10));
                         }
                     }
                 }
@@ -228,6 +236,7 @@ namespace MissileCommand
                     if (missileSites[0].missiles[i].exploded)
                     {
                         missileSites[0].missiles.RemoveAt(i);
+                        markers.RemoveAt(0);
                     }
                 }
 
@@ -239,6 +248,7 @@ namespace MissileCommand
                         if (missileSites[1].missiles[i].positionReached())
                         {
                             missileSites[1].missiles[i].Explode();
+                            
                         }
                         else
                         {
@@ -249,6 +259,7 @@ namespace MissileCommand
                     if (missileSites[1].missiles[i].exploded)
                     {
                         missileSites[1].missiles.RemoveAt(i);
+                        markers.RemoveAt(0);
                     }
                 }
 
@@ -270,6 +281,7 @@ namespace MissileCommand
                     if (missileSites[2].missiles[i].exploded)
                     {
                         missileSites[2].missiles.RemoveAt(i);
+                        markers.RemoveAt(0);
                     }
                 }
             }
@@ -317,6 +329,11 @@ namespace MissileCommand
                 for (int i = 0; i < missileSites[2].missiles.Count; i++)
                 {
                     spriteBatch.Draw(pixel, missileSites[2].missiles[i].position, Color.White);
+                }
+
+                for (int i = 0; i < markers.Count; i++)
+                {
+                    spriteBatch.Draw(crosshairT, markers[i], Color.Red);
                 }
 
                 for (int i = 0; i < eMissiles.Count; i++)
