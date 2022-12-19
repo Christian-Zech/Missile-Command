@@ -16,6 +16,8 @@ namespace MissileCommand
         public Boolean firingMissile;
         public Boolean isActive;
         public Random rand;
+        Rectangle window;
+
 
         public Airplane(Texture2D texture)
         {
@@ -30,18 +32,16 @@ namespace MissileCommand
 
         public void Update(Rectangle window)
         {
+            this.window = window;
 
             if (isActive)
             {
 
 
+                if(position.X < window.Left || position.X > window.Right - position.Width)
+                    isActive = false;
 
-                // makes airplane randomly move left and right unless it hits wall
-                if (rand.Next(0, 150) == 5 || position.X < window.Left || position.X > window.Right - position.Width)
-                    velocity.X *= -1;
-
-
-
+                
                 // moves plane horizontally
                 position.X += (int)velocity.X;
 
@@ -71,7 +71,15 @@ namespace MissileCommand
         public void reset()
         {
             position = new Rectangle(0, 200, 50, 20);
-            velocity = new Vector2(3, 0);
+
+            // randomly decides what location to spawn the airplane
+            if(rand.Next(0,2) == 0) {
+                velocity = new Vector2(-3,0);
+                position.X = window.Right - 15;
+            }
+            else
+                velocity = new Vector2(3,0);
+            
             firingMissile = false;
             isActive = false;
         }
