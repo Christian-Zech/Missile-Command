@@ -312,7 +312,7 @@ namespace MissileCommand
             if (gameState == GameState.menu)
                 spriteBatch.DrawString(menuFont, "Welcome to Missile Command!\nPress SPACE to start!", new Vector2(150, 150), Color.White);
 
-            if (gameState == GameState.menu)
+            if (gameState == GameState.play)
             {
                 //ground
                 spriteBatch.Draw(pixel, ground, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
