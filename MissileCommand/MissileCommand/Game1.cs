@@ -30,6 +30,7 @@ namespace MissileCommand
         Rectangle window;
         List<Rectangle> markers;
         Site[] missileSites;
+        List<PlayerMissiles> movingMissiles;
         List<Explosion> explosions;
 
         List<EnemyMissile> eMissiles;
@@ -66,6 +67,7 @@ namespace MissileCommand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            movingMissiles = new List<PlayerMissiles>();
             markers = new List<Rectangle>();
             explosions = new List<Explosion>();
             eMissiles = new List<EnemyMissile>();
@@ -137,8 +139,8 @@ namespace MissileCommand
                 this.Exit();
 
             // TODO: Add your update logic here
-            if (kb.IsKeyDown(Keys.Space) && gameState == GameState.menu)
-                gameState++;
+            if (kb.IsKeyDown(Keys.Enter) && gameState == GameState.menu)
+                gameState = GameState.play;
 
             if (gameState == GameState.play)
             {
@@ -166,7 +168,7 @@ namespace MissileCommand
                 {
                     crosshair.Y -= 5;
                 }
-                if (kb.IsKeyDown(Keys.S) && crosshair.Y < GraphicsDevice.Viewport.Height)
+                if (kb.IsKeyDown(Keys.S) && crosshair.Y < GraphicsDevice.Viewport.Height+crosshair.Height)
                 {
                     crosshair.Y += 5;
                 }
@@ -174,7 +176,7 @@ namespace MissileCommand
                 {
                     crosshair.X -= 5;
                 }
-                if (kb.IsKeyDown(Keys.D) && crosshair.X < GraphicsDevice.Viewport.Width)
+                if (kb.IsKeyDown(Keys.D) && crosshair.X < GraphicsDevice.Viewport.Width+crosshair.Width)
                 {
                     crosshair.X += 5;
                 }
@@ -215,6 +217,8 @@ namespace MissileCommand
                         if (missileSites[0].missiles.Count != 0 && missileSites[0].missiles[0].velocity.Y == 0)
                         {
                             missileSites[0].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                            movingMissiles.Add(missileSites[0].missiles[0]);
+                            missileSites[0].missiles.RemoveAt(0);
                             markers.Add(new Rectangle(crosshair.X, crosshair.Y, 10, 10));
                         }
                         
@@ -224,6 +228,8 @@ namespace MissileCommand
                         if (missileSites[1].missiles.Count != 0 && missileSites[1].missiles[0].velocity.Y == 0)
                         {
                             missileSites[1].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                            movingMissiles.Add(missileSites[1].missiles[0]);
+                            missileSites[1].missiles.RemoveAt(0);
                             markers.Add(new Rectangle(crosshair.X, crosshair.Y, 10, 10));
                         }
                     }
@@ -232,76 +238,45 @@ namespace MissileCommand
                         if (missileSites[2].missiles.Count != 0 && missileSites[2].missiles[0].velocity.Y == 0)
                         {
                             missileSites[2].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+                            movingMissiles.Add(missileSites[2].missiles[0]);
+                            missileSites[2].missiles.RemoveAt(0);
                             markers.Add(new Rectangle(crosshair.X, crosshair.Y, 10, 10));
                         }
                     }
                 }
-                for (int i = 0; i < missileSites[0].missiles.Count; i++)
+                for (int i = 0; i < movingMissiles.Count; i++)
                 {
-                    if (missileSites[0].missiles[i].velocity.Y != 0)
+                    if (movingMissiles[i].velocity.Y != 0)
                     {
                         
-                        if (missileSites[0].missiles[i].positionReached())
+                        if (movingMissiles[i].positionReached())
                         {
-                            missileSites[0].missiles[i].Explode();
+                            explosions.Add(new Explosion(movingMissiles[i].position));
+                            //movingMissiles[i].Explode();
+                            movingMissiles.RemoveAt(i);
+                            markers.RemoveAt(0);
                         }
                         else
                         {
-                            missileSites[0].missiles[i].Move();
+                            movingMissiles[i].Move();
                         }
                         
                     }
-                    if (missileSites[0].missiles[i].exploded)
-                    {
-                        missileSites[0].missiles.RemoveAt(i);
-                        markers.RemoveAt(0);
-                    }
+                    //if (movingMissiles[i].exploded)
+                    //{
+                    //    //movingMissiles.RemoveAt(i);
+                    //    //markers.RemoveAt(0);
+                    //}
                 }
-
-                for (int i = 0; i < missileSites[1].missiles.Count; i++)
+                for (int i = 0; i < explosions.Count; i++)
                 {
-                    if (missileSites[1].missiles[i].velocity.Y != 0)
+                    explosions[i].Explode();
+                    if (explosions[i].done)
                     {
-
-                        if (missileSites[1].missiles[i].positionReached())
-                        {
-                            missileSites[1].missiles[i].Explode();
-                            
-                        }
-                        else
-                        {
-                            missileSites[1].missiles[i].Move();
-                        }
-
-                    }
-                    if (missileSites[1].missiles[i].exploded)
-                    {
-                        missileSites[1].missiles.RemoveAt(i);
-                        markers.RemoveAt(0);
+                        explosions.RemoveAt(i);
                     }
                 }
-
-                for (int i = 0; i < missileSites[2].missiles.Count; i++)
-                {
-                    if (missileSites[2].missiles[i].velocity.Y != 0)
-                    {
-
-                        if (missileSites[2].missiles[i].positionReached())
-                        {
-                            missileSites[2].missiles[i].Explode();
-                        }
-                        else
-                        {
-                            missileSites[2].missiles[i].Move();
-                        }
-
-                    }
-                    if (missileSites[2].missiles[i].exploded)
-                    {
-                        missileSites[2].missiles.RemoveAt(i);
-                        markers.RemoveAt(0);
-                    }
-                }
+                
             }
 
 
@@ -322,7 +297,7 @@ namespace MissileCommand
             spriteBatch.Begin();
 
             if (gameState == GameState.menu)
-                spriteBatch.DrawString(menuFont, "Welcome to Missile Command!\nPress SPACE to start!", new Vector2(150, 150), Color.White);
+                spriteBatch.DrawString(menuFont, "Welcome to Missile Command!\nUse WASD to move the crosshair around the screen\nPress SPACE to fire a missile to your crosshairs location\nPress ENTER to start!", new Vector2(100, 150), Color.White);
 
             if (gameState == GameState.play)
             {
@@ -333,20 +308,13 @@ namespace MissileCommand
                 spriteBatch.Draw(pixel, missileSites[0].position, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
                 spriteBatch.Draw(pixel, missileSites[1].position, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
                 spriteBatch.Draw(pixel, missileSites[2].position, null, Color.Yellow, 0, new Vector2(0, 0), SpriteEffects.None, 1);
-
-                for (int i = 0; i < missileSites[0].missiles.Count; i++)
+                for (int i = 0; i < movingMissiles.Count; i++)
                 {
-                    spriteBatch.Draw(pixel, missileSites[0].missiles[i].position, Color.White);
+                    spriteBatch.Draw(pixel, movingMissiles[i].position, Color.White);
                 }
-
-                for (int i = 0; i < missileSites[1].missiles.Count; i++)
+                for (int i = 0; i < explosions.Count; i++)
                 {
-                    spriteBatch.Draw(pixel, missileSites[1].missiles[i].position, Color.White);
-                }
-
-                for (int i = 0; i < missileSites[2].missiles.Count; i++)
-                {
-                    spriteBatch.Draw(pixel, missileSites[2].missiles[i].position, Color.White);
+                    spriteBatch.Draw(pixel, explosions[i].rect, Color.White);
                 }
 
                 for (int i = 0; i < markers.Count; i++)
