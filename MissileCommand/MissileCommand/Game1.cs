@@ -444,7 +444,7 @@ namespace MissileCommand
                 if (kb.IsKeyDown(Keys.R))
                 {
                     score = 0;
-                    round = 1;
+                    round = 0;
                     gameState = GameState.menu;
                 }
             }
