@@ -45,7 +45,7 @@ namespace MissileCommand
             int dx = (int)pos.X+pos.Width / 2 - position.X + position.Width / 2;
             int dy = (int)pos.Y+pos.Height / 2 - position.Y + position.Height / 2;
             int hyp = (int)Math.Sqrt((double)(dx * dx) + (double)(dy * dy));
-            temp = hyp / 5;
+            temp = hyp / 9;
             dx = (int)(dx/temp);
             dy = (int)(dy/temp);
 

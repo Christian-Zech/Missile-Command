@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Airplane.cs" />
     <Compile Include="Building.cs" />
+    <Compile Include="City.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="PlayerMissiles.cs" />
     <Compile Include="Site.cs" />
