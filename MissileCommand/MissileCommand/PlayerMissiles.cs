@@ -36,18 +36,18 @@ namespace MissileCommand
             int screenH = h;
 
             finalPos = new Vector2(pos.X, pos.Y) ;
-
-            int x = (int)pos.X+pos.Width/2 - position.X;
-            int y = (int)pos.Y+pos.Height/2 - position.Y;
+            
+            int x = (int)pos.X+pos.Width/2 - position.X+position.Width/2;
+            int y = (int)pos.Y+pos.Height/2 - position.Y + position.Height / 2;
             double temp = Math.Atan2(y, x);
             
             
-            int dx = (int)pos.X+pos.Width / 2 - position.X;
-            int dy = (int)pos.Y+pos.Height / 2 - position.Y;
+            int dx = (int)pos.X+pos.Width / 2 - position.X + position.Width / 2;
+            int dy = (int)pos.Y+pos.Height / 2 - position.Y + position.Height / 2;
             int hyp = (int)Math.Sqrt((double)(dx * dx) + (double)(dy * dy));
-            temp = hyp / 5;
-            dx /= (int)temp;
-            dy /= (int)temp;
+            temp = hyp / 9;
+            dx = (int)(dx/temp);
+            dy = (int)(dy/temp);
 
             velocity = new Vector2(dx, dy);
             Console.WriteLine(velocity);

@@ -27,6 +27,14 @@ namespace MissileCommand
                 missiles.Add(new PlayerMissiles(new Rectangle(pos.X+pos.Width/2, pos.Y+pos.Height/2, 8, 8), false));
             }
         }
+        public void Refill()
+        {
+            missiles = new List<PlayerMissiles>();
+            for (int i = 0; i < 10; i++)
+            {
+                missiles.Add(new PlayerMissiles(new Rectangle(position.X + position.Width / 2, position.Y + position.Height / 2, 8, 8), false));
+            }
+        }
         public override bool CheckHit(Rectangle missile)
         {
             if (position.Intersects(missile))
@@ -37,7 +45,11 @@ namespace MissileCommand
         }
         public override void Destroy()
         {
-            position.Height /= 3;
+            position.Y += 30;
+        }
+        public void unDestroy()
+        {
+            position.Y -= 30;
         }
     }
 }
