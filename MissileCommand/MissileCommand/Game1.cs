@@ -31,6 +31,7 @@ namespace MissileCommand
         List<Rectangle> markers;
         Site[] missileSites;
         City[] cities;
+        SoundEffect explosionSound;
         List<PlayerMissiles> movingMissiles;
         List<Explosion> explosions;
 
@@ -111,6 +112,8 @@ namespace MissileCommand
             pixel = this.Content.Load<Texture2D>("pixel");
             crosshairT = this.Content.Load<Texture2D>("crosshair-img");
             scoreFont=Content.Load<SpriteFont>("MenuFont");
+            explosionSound = this.Content.Load<SoundEffect>("tng_torpedo_clean");
+
         }
 
         /// <summary>
@@ -141,6 +144,7 @@ namespace MissileCommand
         {
             round++;
             Random rnd = new Random();
+            eMissiles.Clear();
             while (eMissiles.Count != round)
                 eMissiles.Add(new EnemyMissile(new Rectangle(rnd.Next(30, GraphicsDevice.Viewport.Width - 30), 0, 8, 8), new Vector2(rnd.Next(-1, 2), 1), false));
             for (int i = 0; i < 3; i++)
@@ -336,6 +340,7 @@ namespace MissileCommand
                     {
                         if (missileSites[0].missiles.Count != 0 && missileSites[0].missiles[0].velocity.Y == 0 && missileSites[0].alive)
                         {
+                            explosionSound.Play();
                             missileSites[0].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
                             movingMissiles.Add(missileSites[0].missiles[0]);
                             missileSites[0].missiles.RemoveAt(0);
@@ -347,6 +352,7 @@ namespace MissileCommand
                     {
                         if (missileSites[1].missiles.Count != 0 && missileSites[1].missiles[0].velocity.Y == 0)
                         {
+                            explosionSound.Play();
                             missileSites[1].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
                             movingMissiles.Add(missileSites[1].missiles[0]);
                             missileSites[1].missiles.RemoveAt(0);
@@ -357,6 +363,7 @@ namespace MissileCommand
                     {
                         if (missileSites[2].missiles.Count != 0 && missileSites[2].missiles[0].velocity.Y == 0 && missileSites[2].alive)
                         {
+                            explosionSound.Play();
                             missileSites[2].missiles[0].Calculate(crosshair, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
                             movingMissiles.Add(missileSites[2].missiles[0]);
                             missileSites[2].missiles.RemoveAt(0);
@@ -441,7 +448,7 @@ namespace MissileCommand
             if (gameState == GameState.end)
             {
                 timer = 0;
-                if (kb.IsKeyDown(Keys.R))
+                if (kb.IsKeyDown(Keys.R) && oldkb.IsKeyUp(Keys.R))
                 {
                     score = 0;
                     round = 0;
