@@ -15,29 +15,41 @@ namespace MissileCommand
     {
         public Rectangle rect;
         public Boolean done;
-        int temp;
+        int temp, i;
         public Explosion(Rectangle pos)
         {
             rect = pos;
             done = false;
             temp = 0;
+            i = 0;
             Explode();
         }
         public void Explode()
         {
             if (!done)
             {
+                i++;
                 if (temp == 0)
                 {
+                    if (i % 2 == 0){
+                        rect.X--;
+                        rect.Y--;
+                    }
+                    
                     rect.Width++;
                     rect.Height++;
-                    if (rect.Width > 30)
+                    if (rect.Width > 35)
                     {
                         temp = 1;
                     }
                 }
                 if (temp == 1)
                 {
+                    if (i % 2 == 0)
+                    {
+                        rect.X++;
+                        rect.Y++;
+                    }
                     rect.Width--;
                     rect.Height--;
                     if (rect.Width < 5)

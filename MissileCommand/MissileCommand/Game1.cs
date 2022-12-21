@@ -141,6 +141,7 @@ namespace MissileCommand
         {
             round++;
             Random rnd = new Random();
+            eMissiles.Clear();
             while (eMissiles.Count != round)
                 eMissiles.Add(new EnemyMissile(new Rectangle(rnd.Next(30, GraphicsDevice.Viewport.Width - 30), 0, 8, 8), new Vector2(rnd.Next(-1, 2), 1), false));
             for (int i = 0; i < 3; i++)
@@ -441,7 +442,7 @@ namespace MissileCommand
             if (gameState == GameState.end)
             {
                 timer = 0;
-                if (kb.IsKeyDown(Keys.R))
+                if (kb.IsKeyDown(Keys.R) && oldkb.IsKeyUp(Keys.R))
                 {
                     score = 0;
                     round = 0;
